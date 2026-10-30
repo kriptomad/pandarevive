@@ -1,0 +1,8 @@
+[submodule "panda"]
+	path = panda
+	url = https://github.com/kriptomad/panda.git
+	branch = revive-f4
+[submodule "openpilot"]
+	path = openpilot
+	url = https://github.com/kriptomad/openpilot.git
+	branch = revive-f4
