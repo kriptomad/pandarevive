@@ -7,7 +7,7 @@ import subprocess
 from panda import Panda, PandaDFU
 from openpilot.common.basedir import BASEDIR
 from openpilot.common.params import Params
-from openpilot.common.hardware import HARDWARE
+from openpilot.common.hardware import HARDWARE, COMMA_HARDWARE
 from openpilot.common.swaglog import cloudlog
 
 
@@ -35,7 +35,14 @@ def panda_ready() -> bool:
 def flash_panda() -> None:
   """Reflash bootstub + app from the ST bootloader. Works from any state the panda can be in."""
   cloudlog.warning("flashing panda")
-  HARDWARE.recover_internal_panda()
+  if COMMA_HARDWARE:
+    HARDWARE.recover_internal_panda()
+  elif not PandaDFU.list():
+    # an external panda has no reset lines, ask the firmware to jump to the ST bootloader
+    with Panda(cli=False) as p:
+      if not p.bootstub:
+        p.reset(enter_bootstub=True)
+      p.reset(enter_bootloader=True)
   assert Panda.wait_for_dfu(None, timeout=5), "panda didn't enter DFU"
   with PandaDFU(None) as dfu:
     dfu.recover()

@@ -96,7 +96,7 @@ void PandaTest::test_can_recv(uint32_t rx_chunk_size) {
 }
 
 void test_can_protocol() {
-  for (auto hw_type : {cereal::PandaState::PandaType::DOS, cereal::PandaState::PandaType::RED_PANDA}) {
+  for (auto hw_type : {cereal::PandaState::PandaType::BLACK_PANDA, cereal::PandaState::PandaType::DOS, cereal::PandaState::PandaType::RED_PANDA}) {
     for (int can_list_size : {1, 3, 5, 10, 30, 60, 100, 200}) {
       PandaTest send_test(can_list_size, hw_type);
       send_test.test_can_send();
